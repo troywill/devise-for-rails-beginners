@@ -1,0 +1,70 @@
+* Overview
+* [1/2] Generate an initial application
+  1. [X] rails new
+     #+BEGIN_SRC sh
+       rails new appname
+     #+END_SRC
+  2. [X] Create a “home” controller and a “home/index” page
+     #+BEGIN_SRC sh
+       rails generate controller home index --no-controller-specs --skip-stylesheets --skip-javascripts
+     #+END_SRC
+     - --skip-stylesheets --skip-javascripts to avoid cluttering our application with stylesheet and JavaScript files we don’t need.
+  3. [X] Set the default route to home/index in [[file:appname/config/routes.rb][config/routes.rb]]
+     #+BEGIN_SRC ruby
+       root 'home#index'
+     #+END_SRC
+  4. [X] Set the time zone file:../config/application.rb
+     #+BEGIN_SRC sh
+       rake -D time
+       rake time:zones:us
+     #+END_SRC
+     #+BEGIN_SRC ruby
+       config.time_zone = 'Pacific Time (US & Canada)'
+     #+END_SRC
+     
+* [6/6] Create a User authentication system with Devise < see [[file:/troy@usahealthscience.com:/home/troy/srv/devise/128/emacs/emacs/step-by-step-devise.org][step-by-step-devise.org]] >
+  1. [X] Enable `devise` gem in [[file:appname/Gemfile][Gemfile]]
+     #+BEGIN_SRC conf
+       gem 'devise', '~> 3.0.0.rc' # Wed May  8 18:03:54 PDT 2013, Rails 4.0.0.rc1
+     #+END_SRC
+  2. [X] Run the Devise gem install generator
+     #+BEGIN_SRC sh
+       rails generate devise:install
+     #+END_SRC
+  3. [X] Generate a User Model and generate routes for user activities
+     #+BEGIN_SRC sh
+       rails generate devise User
+     #+END_SRC
+  4. [X] Run the devise_create_users database migration the was created by in the previous command
+     #+BEGIN_SRC sh
+       rake db:migrate
+     #+END_SRC
+  5. [X] (Re)start the Rails server
+     #+BEGIN_SRC 
+       kill -USR1 `cat ../tmp/pids/server.pid `; rails server --daemon
+     #+END_SRC
+  6. [X] Place sign up and sign out links on the home page file:../app/views/home/index.html.erb
+     #+BEGIN_SRC html
+       <h1>Home#index</h1>
+       <%= Time.now %>
+       <li><%= link_to "Sign Up", new_user_registration_path %></li>
+       <li><%= link_to "Sign In", new_user_session_path %></li>
+       <li><%= link_to "Sign Out", destroy_user_session_path, :method => 'delete' %></li>
+       
+       <% if user_signed_in? %>
+       You are signed in, current_user.id = <%= current_user.id %><br />
+       user_session.keys => <%= user_session.keys %>
+       <% end %>
+     #+END_SRC
+     - To verify if a user is signed in, use the following helper: user_signed_in?
+     - See https://github.com/plataformatec/devise#controller-filters-and-helpers
+     - file:../app/views/home/index.html.erb
+     - For the current signed-in user, this helper is available: current_user
+** (Optional) create a user from console
+   #+BEGIN_SRC ruby
+     User.new(:email => "user@name.com", :password => 'password', :password_confirmation => 'password').save
+   #+END_SRC
+* Resources
+** Devise primary sources
+   1. http://rubygems.org/gems/devise
+   2. https://github.com/plataformatec/devise
