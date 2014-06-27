@@ -1,5 +1,5 @@
 * Overview
-* [0/4] Generate an initial application
+* [/] Generate an initial application
   1. [ ] rails new
      #+BEGIN_SRC sh
        rails new appname
@@ -15,17 +15,17 @@
      #+END_SRC
   4. [ ] Set the time zone file:../config/application.rb
      #+BEGIN_SRC sh
-       rake -D time
+       rake --describe time
        rake time:zones:us
      #+END_SRC
      #+BEGIN_SRC ruby
        config.time_zone = 'Pacific Time (US & Canada)'
      #+END_SRC
      
-* [0/6] Create a User authentication system with Devise < see [[file:/troy@usahealthscience.com:/home/troy/srv/devise/128/emacs/emacs/step-by-step-devise.org][step-by-step-devise.org]] >
+* [/] Create a User authentication system with Devise
   1. [ ] Enable `devise` gem in [[file:../Gemfile][Gemfile]]
      #+BEGIN_SRC conf
-       gem 'devise', '~> 3.0.0.rc' # Wed May  8 18:03:54 PDT 2013, Rails 4.0.0.rc1
+       gem 'devise', '~> 3.2.4' # Fri Jun 27 08:32:06 PDT 2014, Rails 4.1.1
      #+END_SRC
   2. [ ] Run the Devise gem install generator
      #+BEGIN_SRC sh
