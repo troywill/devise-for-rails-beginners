@@ -1,41 +1,45 @@
 * Overview
-* [/] Generate an initial application
-  1. [ ] rails new
-     #+BEGIN_SRC sh
+* [6/6] Generate an initial application
+  1. [X] rails new
+     #+BEGIN_SRC sh :tangle bin/create-new-rails-app.sh
        rails new appname
      #+END_SRC
-  2. [ ] Create a “home” controller and a “home/index” page
-     #+BEGIN_SRC sh
+  2. [X] Move this rails-devise-step-by-step.org file to appname
+  3. [X] JavaScript in file:Gemfile   
+     #+BEGIN_SRC ruby
+       gem 'therubyracer',  platforms: :ruby     
+     #+END_SRC
+  4. [X] Create a “home” controller and a “home/index” page
+     #+BEGIN_SRC sh :tangle bin/generate-home-controller.sh
        rails generate controller home index --no-controller-specs --skip-stylesheets --skip-javascripts
      #+END_SRC
      - --skip-stylesheets --skip-javascripts to avoid cluttering our application with stylesheet and JavaScript files we don’t need.
-  3. [ ] Set the default route to home/index in [[file:appname/config/routes.rb][config/routes.rb]]
+  5. [X] Set the default route to home/index in [[file:config/routes.rb][config/routes.rb]]
      #+BEGIN_SRC ruby
        root 'home#index'
      #+END_SRC
-  4. [ ] Set the time zone file:../config/application.rb
+  6. [X] Set the time zone [[file:config/application.rb]]
+     #+BEGIN_SRC ruby
+       config.time_zone = 'Pacific Time (US & Canada)'
+     #+END_SRC
      #+BEGIN_SRC sh
        rake --describe time
        rake time:zones:us
      #+END_SRC
-     #+BEGIN_SRC ruby
-       config.time_zone = 'Pacific Time (US & Canada)'
-     #+END_SRC
-     
-* [/] Create a User authentication system with Devise
-  1. [ ] Enable `devise` gem in [[file:../Gemfile][Gemfile]]
+* [5/6] Create a User authentication system with Devise
+  1. [X] Enable `devise` gem in [[file:Gemfile]]
      #+BEGIN_SRC conf
        gem 'devise', '~> 3.2.4' # Fri Jun 27 08:32:06 PDT 2014, Rails 4.1.1
      #+END_SRC
-  2. [ ] Run the Devise gem install generator
-     #+BEGIN_SRC sh
+  2. [X] Run the Devise gem install generator
+     #+BEGIN_SRC sh :tangle bin/devise-install-generator.sh
        rails generate devise:install
      #+END_SRC
-  3. [ ] Generate a User Model and generate routes for user activities
-     #+BEGIN_SRC sh
+  3. [X] Generate a User Model and generate routes for user activities
+     #+BEGIN_SRC sh :tangle bin/generate-user-model.sh
        rails generate devise User
      #+END_SRC
-  4. [ ] Run the devise_create_users database migration the was created by in the previous command
+  4. [X] Run the devise_create_users database migration the was created by in the previous command
      #+BEGIN_SRC sh
        rake db:migrate
      #+END_SRC
@@ -43,7 +47,7 @@
      #+BEGIN_SRC 
        kill -USR1 `cat ../tmp/pids/server.pid `; rails server --daemon
      #+END_SRC
-  6. [ ] Place sign up and sign out links on the home page file:../app/views/home/index.html.erb
+  6. [X] Place sign up and sign out links on the home page file:app/views/home/index.html.erb
      #+BEGIN_SRC html
        <h1>Home#index</h1>
        <%= Time.now %>
@@ -61,7 +65,7 @@
      - file:../app/views/home/index.html.erb
      - For the current signed-in user, this helper is available: current_user
 ** (Optional) create a user from console
-   #+BEGIN_SRC ruby
+   #+BEGIN_SRC ruby :tangle /tmp/User.rb
      User.new(:email => "user@name.com", :password => 'password', :password_confirmation => 'password').save
    #+END_SRC
 * Resources
